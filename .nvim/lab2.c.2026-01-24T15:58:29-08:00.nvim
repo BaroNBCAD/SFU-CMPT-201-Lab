@@ -1,26 +1,22 @@
 #define _POSIX_C_SOURCE 200809L
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#include <string.h>
 
 int main(void) {
-  char *buff = NULL;
-  size_t size = 0;
   while (1) {
     printf("Enter programs to run.\n");
+    char *buff = NULL;
+    size_t size = 0;
     ssize_t num_read = getline(&buff, &size, stdin);
     if (num_read != -1) {
-      // Solution 1: buff[num_read - 1] = '\0';
-      // Solution 2:
+      //Solution 1: buff[num_read - 1] = '\0';
+      //Solution 2:
       char *saveptr;
       char *ret;
-      ret =
-          strtok_r(buff, " \n\t", &saveptr); // Tokenize space, tab and linefeed
-      if (ret == NULL || strcmp(ret, "exit") == 0)
-        break;
-
+      ret = strtok_r(buff, "\n", &saveptr);
       pid_t pid = fork();
       if (pid != 0) {
         int wstatus;
@@ -28,21 +24,16 @@ int main(void) {
           exit(EXIT_FAILURE);
         }
       } else {
-        if (strcmp(ret, "joke") == 0) {
-          printf("My life is a joke :(\n");
-          exit(0);
-        } else if (execl(ret, ret, NULL) == -1) {
-          // perror("execl");
+        if (execl(ret, ret, NULL) == -1) {
+          perror("execl");
           printf("Exec failure\n");
           exit(EXIT_FAILURE);
         }
       }
-
     } else {
       perror("getline failed");
       exit(EXIT_FAILURE);
     }
   }
-  free(buff);
   return 0;
 }

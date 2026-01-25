@@ -16,8 +16,7 @@ int main(void) {
       // Solution 2:
       char *saveptr;
       char *ret;
-      ret =
-          strtok_r(buff, " \n\t", &saveptr); // Tokenize space, tab and linefeed
+      ret = strtok_r(buff, " \n\t", &saveptr); // Tokenize space, tab and linefeed
       if (ret == NULL || strcmp(ret, "exit") == 0)
         break;
 
@@ -27,17 +26,17 @@ int main(void) {
         if (waitpid(pid, &wstatus, 0) == -1) {
           exit(EXIT_FAILURE);
         }
-      } else {
+      }
+      else{ 
         if (strcmp(ret, "joke") == 0) {
           printf("My life is a joke :(\n");
-          exit(0);
         } else if (execl(ret, ret, NULL) == -1) {
           // perror("execl");
           printf("Exec failure\n");
           exit(EXIT_FAILURE);
         }
       }
-
+      
     } else {
       perror("getline failed");
       exit(EXIT_FAILURE);
