@@ -6,5 +6,5 @@ C_DEFINES =
 
 C_INCLUDES = -I/home/cmpt201/lab/SFU-CMPT-201-Lab/lab8/include
 
-C_FLAGS = -g -pthread
+C_FLAGS = -g -fsanitize=thread -g -O1 -pthread
 

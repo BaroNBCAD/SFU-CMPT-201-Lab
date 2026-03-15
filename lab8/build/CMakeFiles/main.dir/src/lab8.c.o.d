@@ -54,7 +54,7 @@ CMakeFiles/main.dir/src/lab8.c.o: \
   /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
   /usr/include/x86_64-linux-gnu/bits/floatn.h \
   /usr/include/x86_64-linux-gnu/bits/floatn-common.h \
-  /usr/include/stdlib.h \
+  /usr/include/x86_64-linux-gnu/bits/stdio.h /usr/include/stdlib.h \
   /usr/lib/llvm-18/lib/clang/18/include/__stddef_wchar_t.h \
   /usr/include/x86_64-linux-gnu/bits/waitflags.h \
   /usr/include/x86_64-linux-gnu/bits/waitstatus.h \
@@ -67,6 +67,7 @@ CMakeFiles/main.dir/src/lab8.c.o: \
   /usr/include/x86_64-linux-gnu/bits/types/sigset_t.h \
   /usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h \
   /usr/include/alloca.h \
+  /usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h \
   /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
   /home/cmpt201/lab/SFU-CMPT-201-Lab/lab8/include/uthash.h \
   /usr/include/string.h /usr/include/strings.h \
