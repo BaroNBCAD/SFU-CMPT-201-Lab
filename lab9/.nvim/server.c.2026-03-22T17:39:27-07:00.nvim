@@ -35,8 +35,7 @@ void *handle_client(void *arg) {
   struct client_info *client = (struct client_info *)arg;
 
   // TODO: print the message received from client
-  printf("New client created! ID %d on socket FD %d\n", client->client_id,
-         client->cfd);
+  printf("New client created! ID %d on socket FD %d\n", client->client_id, client->cfd);
   // TODO: increase total_message_count per message
   ssize_t num_read;
   char buf[BUF_SIZE];
@@ -45,7 +44,7 @@ void *handle_client(void *arg) {
     buf[num_read] = '\0';
     pthread_mutex_lock(&count_mutex);
     total_message_count++;
-    printf("Msg #\t%d; Client ID %d: %s", total_message_count,
+    printf("Msg # %d\t; Client ID %d:%s", total_message_count,
            client->client_id, buf);
     pthread_mutex_unlock(&count_mutex);
   }

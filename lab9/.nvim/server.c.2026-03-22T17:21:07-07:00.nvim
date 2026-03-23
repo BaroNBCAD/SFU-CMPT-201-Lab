@@ -35,24 +35,10 @@ void *handle_client(void *arg) {
   struct client_info *client = (struct client_info *)arg;
 
   // TODO: print the message received from client
-  printf("New client created! ID %d on socket FD %d\n", client->client_id,
-         client->cfd);
+  printf("Debug\nClient ID: %d, Socket: %d\n", 
+           client->client_id, client->cft);
   // TODO: increase total_message_count per message
-  ssize_t num_read;
-  char buf[BUF_SIZE];
 
-  while ((num_read = read(client->cfd, buf, BUF_SIZE)) > 0) {
-    buf[num_read] = '\0';
-    pthread_mutex_lock(&count_mutex);
-    total_message_count++;
-    printf("Msg #\t%d; Client ID %d: %s", total_message_count,
-           client->client_id, buf);
-    pthread_mutex_unlock(&count_mutex);
-  }
-  // client exit, read stops.
-  close(client->cfd);
-  printf("Ending thread for client %d\n", client->client_id);
-  free(client);
   return NULL;
 }
 
@@ -84,15 +70,14 @@ int main() {
     // client_info
     struct sockaddr_in client_addr;
     socklen_t client_addr_len = sizeof(struct sockaddr_in);
-    int accepted_fd =
-        accept(sfd, (struct sockaddr *)&client_addr, &client_addr_len);
-    if (accepted_fd == -1) {
+    int accepted_fd = accept(sfd, (struct sockaddr *)&client_addr, &client_addr_len);
+    if (accepted_fd == -1){
       perror("accept");
       continue;
     }
 
     struct client_info *info = malloc(sizeof(struct client_info));
-    if (info == NULL) {
+    if (info == NULL){
       perror("malloc");
       close(accepted_fd);
       continue;
@@ -106,11 +91,12 @@ int main() {
 
     pthread_t thread_id;
 
-    if (pthread_create(&thread_id, NULL, handle_client, (void *)info) != 0) {
+    if (phtread_create(&thread_id, NULL, handle_client, (void *)info) != 0){
       perror("pthread_create");
       free(info);
       close(accepted_fd);
-    } else {
+    }
+    else{
       pthread_detach(thread_id);
     }
   }
