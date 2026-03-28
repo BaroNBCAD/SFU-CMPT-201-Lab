@@ -1,6 +1,6 @@
 /*
 Questions to answer at top of server.c:
-(You should not need to change client)
+(You should not need to change client.c)
 Understanding the Client:
 1. How is the client sending data to the server? What protocol?
 client.c has an array, using strncpy and send a buffer through
@@ -61,7 +61,7 @@ socket may still wait for read().
 #define BUF_SIZE 1024
 #define PORT 8001
 #define LISTEN_BACKLOG 32
-#define MAX_CLIENTS 12
+#define MAX_CLIENTS 100 
 #define NUM_MSG_PER_CLIENT 5
 
 #define handle_error(msg)                                                      \
