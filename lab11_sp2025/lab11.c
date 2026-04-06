@@ -10,10 +10,10 @@
 #define GRN "\e[0;32m"
 #define CRESET "\e[0m"
 
-#define handle_error(msg)            \
-  do {                               \
-    perror(msg);                     \
-    exit(EXIT_FAILURE);              \
+#define handle_error(msg)                                                      \
+  do {                                                                         \
+    perror(msg);                                                               \
+    exit(EXIT_FAILURE);                                                        \
   } while (0)
 
 size_t read_all_bytes(const char *filename, void *buffer, size_t buffer_size) {
@@ -64,7 +64,18 @@ int main() {
 
   // TODO: Load the public key using PEM_read_PUBKEY
   EVP_PKEY *pubkey = NULL;
+  FILE *pubkey_file = fopen("public_key.pem", "r");
+  if (!pubkey_file) {
+    handle_error("pubkey_file fopen");
+  }
 
+  pubkey = PEM_read_PUBKEY(pubkey_file, NULL, NULL, NULL);
+
+  if (pubkey == NULL) {
+    fclose(pubkey_file);
+    handle_error("PEM_read_PUBKEY");
+  }
+  fclose(pubkey_file);
   // Verify each message
   for (int i = 0; i < 3; i++) {
     printf("... Verifying message %d ...\n", i + 1);
@@ -102,6 +113,23 @@ int verify(const char *message_path, const char *sign_path, EVP_PKEY *pubkey) {
 
   // TODO: Check if the message is authentic using the signature.
   // Look at: https://wiki.openssl.org/index.php/EVP_Signing_and_Verifying
+  size_t message_len = read_all_bytes(message_path, message, MAX_FILE_SIZE);
+  size_t signature_len = read_all_bytes(sign_path, signature, MAX_FILE_SIZE);
+  signature[0] = 'x'; // Trying Task 3.2
+  EVP_MD_CTX *ctx = NULL;
+  int ret = -1;
+  ctx = EVP_MD_CTX_new();
+  if (ctx == NULL) {
+    return -1;
+  }
 
-  return -1;
+  if (1 != EVP_DigestVerifyInit(ctx, NULL, EVP_sha256(), NULL, pubkey))
+    goto err;
+  if (1 != EVP_DigestVerifyUpdate(ctx, message, message_len))
+    goto err;
+
+  ret = EVP_DigestVerifyFinal(ctx, signature, signature_len);
+err:
+  EVP_MD_CTX_free(ctx);
+  return ret;
 }
